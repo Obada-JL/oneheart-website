@@ -1,105 +1,119 @@
-import Slider1 from "../../public/sliderImage1.jpg";
-export default function Documentations() {
-  return (
-    <div className="flex justify-center items-center bg-gray-100 ">
-      <div className="relative flex flex-col items-center">
-        {/* Timeline */}
-        <div className="absolute w-1 border-l-2 min-h-screen border-dashed border-gray-800 h-full left-1/2 transform -translate-x-1/2"></div>
+"use client";
+import { useEffect, useState } from "react";
+import { useLanguage } from "@/hooks/useLanguage";
+import { BASE_URL } from "@/utils/config";
+import PageTransition from "@/components/PageTransition";
 
-        {/* Timeline Events */}
-        <div className="flex flex-col items-center w-screen pt-12">
-          {/* Left Card */}
-          <div className="flex justify-end w-3/4 mb-8 relative">
-            <div className="relative w-[240px] rounded-bl-full  border-b-2 my-auto   border-dashed border-gray-800 h-1"></div>
-            <div className="relative w-6 left-0 flex items-start justify-start ">
-              <div className="absolute right-1/2  w-6 h-6 border-r-2 border-b-2 border-green-500  transform -translate-x-[50%-10px] translate-y-[17px] rotate-[-45deg]"></div>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-md w-[300px] text-left relative me-3">
-              <h2 className="text-lg font-semibold flex items-center">
-                <span className="text-yellow-500 text-2xl mr-2">fffffff</span>
-                Warm a Heart Campaign Photos
-              </h2>
-              <p className="text-gray-600 text-sm mt-2">
-                The "Warm a Heart" campaign in Gaza provides winter clothing to
-                families in need during harsh winters.
-              </p>
-              <div className="grid grid-cols-2 gap-2 mt-4">
-                <img
-                  src={Slider1.src}
-                  width={150}
-                  height={100}
-                  className="rounded-lg"
-                  alt="Children in Gaza"
-                />
-                <img
-                  src={Slider1.src}
-                  width={150}
-                  height={100}
-                  className="rounded-lg"
-                  alt="Child in tent"
-                />
-                <div className="col-span-2 h-[100px] relative object-cover">
-                  <img
-                    src={Slider1.src}
-                    width={300}
-                    // height={100}
-                    className="rounded-lg object-cover h-full"
-                    alt="Girl in mask"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className="absolute md:order-none z-5 transform -translate-y-1/2 md:translate-y-0 w-16 h-16 bg-yellow-500 flex items-center justify-center rounded-full shadow-md border"
-                      style={{
-                        // left: "calc(50% - 45px)",
-                        top: "-40px",
-                        zIndex: "5",
-                      }}
-                    >
-                      <p className="text-center text-sm text-black">
-                        Warm a Heart
-                      </p>
+export default function Documentations() {
+  const { language } = useLanguage();
+  const [docs, setDocs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDocs = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/documentations`);
+        const data = await response.json();
+        setDocs(data);
+      } catch (error) {
+        console.error("Error fetching documentations:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocs();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
+
+  return (
+    <PageTransition>
+      <div className="flex justify-center items-center bg-gray-100">
+        <div className="relative flex flex-col items-center">
+          <div className="absolute w-1 border-l-2 min-h-screen border-dashed border-gray-800 h-full left-1/2 transform -translate-x-1/2"></div>
+          <div className="flex flex-col items-center pt-12 w-[90vw]">
+            {docs.map((doc, index) => (
+              <div
+                key={doc._id}
+                className={`flex ${
+                  index % 2 === 0
+                    ? "justify-start translate-x-1/2"
+                    : "flex-row-reverse justify-start -translate-x-1/2"
+                } mb-8 w-1/2 relative transform`}
+              >
+                {index % 2 === 0 && (
+                  <div className="absolute top-4 left-0 -translate-x-1/2">
+                    <div className="w-8 h-8 bg-[#47a896] me-1 rounded-full"></div>
+                  </div>
+                )}
+                <div className="relative w-[240px] rounded-bl-full border-b-2 my-auto border-dashed border-gray-800 h-1"></div>
+                <div className="relative w-6 left-0 flex items-start justify-start">
+                  <div
+                    className={`absolute ${
+                      index % 2 === 0 ? "right-1/2" : "left-1/2"
+                    } w-6 h-6 border-r-2 border-b-2 top-1/2 border-gray-800 transform -translate-x-[50%-10px] -translate-y-[12px] rotate-[${
+                      index % 2 === 0 ? "-45" : "135"
+                    }deg]`}
+                  ></div>
+                </div>
+                <div className="p-4 rounded-lg w-[420px] text-left relative">
+                  <h2 className="text-lg font-semibold flex items-center">
+                    <span className="text-yellow-500 text-2xl mr-2">|</span>
+                    {doc.title[language]}
+                  </h2>
+                  <p className="text-gray-600 text-sm mt-2">
+                    {doc.description[language]}
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 mt-4 relative">
+                    {doc.images.slice(0, 2).map((img, i) => (
+                      <img
+                        key={i}
+                        src={`${BASE_URL}/uploads/documentations/${img}`}
+                        width={210}
+                        className="rounded-lg z-[5]"
+                        alt={`Documentation image ${i + 1}`}
+                      />
+                    ))}
+                    <div className="col-span-2 h-[150px] relative object-cover">
+                      {doc.images[2] && (
+                        <img
+                          src={`${BASE_URL}/uploads/documentations/${doc.images[2]}`}
+                          width={420}
+                          className="rounded-lg object-cover h-full z-[5] relative"
+                          alt="Main documentation image"
+                        />
+                      )}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div
+                          className="absolute md:order-none z-5 transform -translate-y-1/2 text-white md:translate-y-0 w-20 h-20 bg-[#47a896] flex items-center justify-center rounded-full shadow-md border"
+                          style={{ top: "-50px", zIndex: "5" }}
+                        >
+                          <p className="text-center font-semibold text-sm text-white">
+                            {doc.title.split(" ").slice(0, 2).join(" ")}
+                          </p>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <a
+                      href={doc.detailsLink}
+                      // target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 right-0 relative bg-[#47a896] w-1/3 text-white py-2 rounded-lg text-sm font-semibold hover:bg-green-600 text-center"
+                    >
+                      View All
+                    </a>
                   </div>
                 </div>
               </div>
-              <button className="mt-4 w-full bg-green-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-green-600">
-                View All
-              </button>
-            </div>
-            {/* Turn Line */}
-          </div>
-
-          {/* Right Card */}
-          <div className="flex justify-start w-1/2 pl-8 mb-8 relative">
-            <div className="bg-white p-4 rounded-lg shadow-md w-60 relative">
-              Helping Families
-              <div className="absolute top-1/2 left-[-24px] w-6 h-6 border-t-2 border-r-2 border-green-500 transform rotate-[135deg]"></div>
-            </div>
-            {/* Turn Line */}
-            <div className="absolute left-0 top-1/2 w-6 h-6 border-l-2 border-b-2 border-green-500 transform -translate-x-1/2 rotate-[135deg]"></div>
-          </div>
-
-          {/* Left Card */}
-          <div className="flex justify-end w-1/2 pr-8 mb-8 relative">
-            <div className="bg-white p-4 rounded-lg shadow-md w-60 text-right relative">
-              Winter Clothing Drive
-              <div className="absolute top-1/2 right-[-24px] w-6 h-6 border-t-2 border-l-2 border-green-500 transform rotate-[-135deg]"></div>
-            </div>
-            {/* Turn Line */}
-            <div className="absolute right-0 top-1/2 w-6 h-6 border-r-2 border-b-2 border-green-500 transform translate-x-1/2 rotate-[-135deg]"></div>
-          </div>
-
-          {/* Right Card */}
-          <div className="flex justify-start w-1/2 pl-8 relative">
-            <div className="bg-white p-4 rounded-lg shadow-md w-60 relative">
-              Support for Gaza
-              <div className="absolute top-1/2 left-[-24px] w-6 h-6 border-t-2 border-r-2 border-green-500 transform rotate-[135deg]"></div>
-            </div>
-            {/* Turn Line */}
-            <div className="absolute left-0 top-1/2 w-6 h-6 border-l-2 border-b-2 border-green-500 transform -translate-x-1/2 rotate-[135deg]"></div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

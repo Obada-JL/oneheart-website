@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useLanguage } from "@/hooks/useLanguage";
 import { MapPin, Mail, Phone, AtSign } from "lucide-react";
 import whatsapp from "../../public/whatsappContact.svg";
 import telegram from "../../public/telegramContact.svg";
@@ -8,10 +9,12 @@ import email from "../../public/emailContact.svg";
 import SuccessModal from "@/components/SuccessModal";
 
 export default function ContactPage() {
+  const { language } = useLanguage();
   const [formData, setFormData] = useState({
     senderName: "",
     senderEmail: "",
     recievedMessage: "",
+    language: language,
   });
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,12 +36,20 @@ export default function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          language: language,
+        }),
       });
 
       if (response.ok) {
         setShowModal(true);
-        setFormData({ senderName: "", senderEmail: "", recievedMessage: "" });
+        setFormData({
+          senderName: "",
+          senderEmail: "",
+          recievedMessage: "",
+          language: language,
+        });
       } else {
         console.error("Failed to send message");
       }

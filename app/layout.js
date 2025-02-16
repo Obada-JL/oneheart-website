@@ -3,6 +3,7 @@ import "./globals.css";
 import { LanguageProvider } from "./context/LanguageContext";
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
+import { AnimatePresence } from "framer-motion";
 
 const almarai = Almarai({
   subsets: ["arabic"],
@@ -28,7 +29,7 @@ export default function RootLayout({ children }) {
         <LanguageProvider>
           <div className="min-h-screen flex flex-col">
             <NavBar />
-            {children}
+            <AnimatePresence mode="wait">{children}</AnimatePresence>
             <Footer />
           </div>
         </LanguageProvider>

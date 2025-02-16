@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/hooks/useLanguage";
 import Heart from "../../public/heart.svg";
 import { BASE_URL } from "@/utils/config";
 
 export default function AboutSection() {
+  const { language } = useLanguage();
   const [aboutData, setAboutData] = useState(null);
 
   useEffect(() => {
@@ -90,9 +92,11 @@ export default function AboutSection() {
         <div className="" style={{ width: "450px" }}>
           <div className="text-2xl flex text-xl gap-1 items-center font-semibold relative z-10">
             <span className="text-yellow-500 font-bold text-3xl">|</span>
-            <div>About Us</div>
+            <div>{translate("aboutUs")}</div>
           </div>
-          <div>{aboutData?.aboutUs?.description || "Loading..."}</div>
+          <div>
+            {aboutData?.aboutUs?.description?.[language] || "Loading..."}
+          </div>
         </div>
       </div>
     </div>
