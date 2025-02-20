@@ -167,7 +167,7 @@ import twitter from "../../public/twitter.svg";
 import tiktok from "../../public/tiktok.svg";
 import instagram from "../../public/instagram.svg";
 import whatsapp from "../../public/whatsapp.svg";
-import logoPadding from "../../public/logo-padding.png";
+import logoPadding from "../../public/Logo-padding.png";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../translations/translations";
 
