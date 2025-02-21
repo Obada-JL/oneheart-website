@@ -1,5 +1,16 @@
-import AboutSection from "../aboutSections/about";
-import GeneralFields from "../aboutSections/generalFields";
+"use client";
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+
+const AboutSection = dynamic(() => import('../aboutSections/about'), {
+  ssr: false,
+  loading: () => <div>Loading About Section...</div>
+});
+
+const GeneralFields = dynamic(() => import('../aboutSections/generalFields'), {
+  ssr: false,
+  loading: () => <div>Loading General Fields...</div>
+});
 
 export default function AboutUs() {
   return (
@@ -47,22 +58,24 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
-      <div className="mb-10">
-        <AboutSection />
-      </div>
-      <div className="flex justify-center mb-10">
-        <hr
-          className="rounded-2xl"
-          style={{
-            width: "80%",
-            height: "2px ",
-            background: "#47a896",
-          }}
-        />
-      </div>
-      <div className="">
-        <GeneralFields />
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div className="mb-10">
+          <AboutSection />
+        </div>
+        <div className="flex justify-center mb-10">
+          <hr
+            className="rounded-2xl"
+            style={{
+              width: "80%",
+              height: "2px",
+              background: "#47a896",
+            }}
+          />
+        </div>
+        <div className="">
+          <GeneralFields />
+        </div>
+      </Suspense>
     </div>
   );
 }

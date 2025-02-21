@@ -7,6 +7,7 @@ const nextConfig = {
   // Increase timeout
   experimental: {
     serverComponentsExternalPackages: ["@vercel/analytics"],
+    serverActions: true,
   },
   webpack: (config, { isServer }) => {
     config.watchOptions = {
@@ -55,6 +56,18 @@ const nextConfig = {
   },
   // Increase page generation timeout
   staticPageGenerationTimeout: 1000,
+  // Add this to handle client-side navigation
+  reactStrictMode: true,
+  // Add this to handle static generation
+  output: 'standalone',
+  // Add these configurations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  // Add this for better error handling
+  onError: (err) => {
+    console.error('Next.js build error:', err);
+  },
 };
 
 module.exports = nextConfig;

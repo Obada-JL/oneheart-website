@@ -25,15 +25,15 @@ export default function RootLayout({ children }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={`${almarai.className} vsc-initialized`}>
-        <LanguageProvider>
+      <LanguageProvider>
+        <body className={`${almarai.className} vsc-initialized`}>
           <div className="min-h-screen flex flex-col">
             <NavBar />
             <AnimatePresence mode="wait">{children}</AnimatePresence>
             <Footer />
           </div>
-        </LanguageProvider>
-      </body>
+        </body>
+      </LanguageProvider>
     </html>
   );
 }
