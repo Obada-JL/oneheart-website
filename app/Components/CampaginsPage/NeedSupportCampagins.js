@@ -21,7 +21,7 @@ export default function NeedSupportCampagins({ selectedCategory }) {
     const fetchCampaigns = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3500/api/support-campagins"
+          "http://145.223.33.75:3500/api/support-campagins"
         );
         const data = await response.json();
         console.log(data);

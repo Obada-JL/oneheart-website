@@ -14,7 +14,9 @@ export default function SliderComponent() {
   useEffect(() => {
     const fetchSliders = async () => {
       try {
-        const response = await fetch("http://localhost:3500/api/image-slider");
+        const response = await fetch(
+          "http://145.223.33.75:3500/api/image-slider"
+        );
 
         const data = await response.json();
         console.log(data);
@@ -62,7 +64,7 @@ export default function SliderComponent() {
             <div
               className="slide"
               style={{
-                backgroundImage: `url(http://localhost:3500/uploads/sliderImages/${slide.sliderImage})`,
+                backgroundImage: `url(http://145.223.33.75:3500/uploads/sliderImages/${slide.sliderImage})`,
               }}
             >
               <div className="overlayDiv" />

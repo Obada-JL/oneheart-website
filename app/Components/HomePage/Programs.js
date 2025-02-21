@@ -19,7 +19,9 @@ export default function Programs() {
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response = await axios.get("http://localhost:3500/api/programs");
+        const response = await axios.get(
+          "http://145.223.33.75:3500/api/programs"
+        );
         setPrograms(response.data);
         setLoading(false);
       } catch (err) {
@@ -59,7 +61,7 @@ export default function Programs() {
               <div className="rounded-2xl shadow-md bg-white">
                 <div>
                   <img
-                    src={`http://localhost:3500/uploads/programs/${program.image}`}
+                    src={`http://145.223.33.75:3500/uploads/programs/${program.image}`}
                     alt={language === "ar" ? program.titleAr : program.title}
                     className="rounded-2xl programsImage"
                   />

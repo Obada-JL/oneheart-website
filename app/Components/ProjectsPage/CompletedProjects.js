@@ -18,7 +18,7 @@ const ProjectCard = ({ image, title, details }) => {
     <div className="rounded-2xl shadow-md bg-white w-full max-w-[350px] mx-auto">
       <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-2xl">
         <img
-          src={`http://localhost:3500/uploads/completed-projects/${image}`}
+          src={`http://145.223.33.75:3500/uploads/completed-projects/${image}`}
           alt={title}
           className="w-full h-full object-cover"
         />
@@ -64,7 +64,7 @@ export default function CompletedProjects({ selectedCategory }) {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3500/api/completed-projects"
+          "http://145.223.33.75:3500/api/completed-projects"
         );
         const data = await response.json();
         setProjects(data);

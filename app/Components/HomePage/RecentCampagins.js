@@ -56,7 +56,7 @@ export default function RecentCampagins() {
     const fetchCampaignVideos = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3500/api/campaign-videos"
+          "http://145.223.33.75:3500/api/campaign-videos"
         );
         setCampaignVideos(response.data);
         setLoading(false);
@@ -83,8 +83,8 @@ export default function RecentCampagins() {
           {campaignVideos.map((video) => (
             <VideoThumbnail
               key={video._id}
-              thumbnail={`http://localhost:3500/uploads/campaign-thumbnails/${video.thumbnail}`}
-              videoSrc={`http://localhost:3500/uploads/campaign-videos/${video.video}`}
+              thumbnail={`http://145.223.33.75:3500/uploads/campaign-thumbnails/${video.thumbnail}`}
+              videoSrc={`http://145.223.33.75:3500/uploads/campaign-videos/${video.video}`}
               title={video.title} // Use the appropriate language version
               date={new Date(video.date).toLocaleDateString(
                 language === "ar" ? "ar-SA" : "en-US"

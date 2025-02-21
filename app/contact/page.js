@@ -33,7 +33,7 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3500/api/messages", {
+      const response = await fetch("http://145.223.33.75:3500/api/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

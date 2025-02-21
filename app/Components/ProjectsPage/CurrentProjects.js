@@ -18,7 +18,7 @@ export default function CurrentProjects({ selectedCategory }) {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3500/api/current-projects"
+          "http://145.223.33.75:3500/api/current-projects"
         );
         const data = await response.json();
         setProjects(data);
@@ -62,7 +62,7 @@ export default function CurrentProjects({ selectedCategory }) {
             <div className="rounded-2xl shadow-md bg-white h-full">
               <div className="aspect-w-16 aspect-h-9">
                 <img
-                  src={`http://localhost:3500/uploads/current-projects/${project.image}`}
+                  src={`http://145.223.33.75:3500/uploads/current-projects/${project.image}`}
                   alt={project.title}
                   className="rounded-t-2xl w-full h-full object-cover"
                 />

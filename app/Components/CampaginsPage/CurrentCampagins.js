@@ -19,7 +19,7 @@ export default function CurrentCampagins({ selectedCategory }) {
     const fetchCampaigns = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3500/api/current-campagins"
+          "http://145.223.33.75:3500/api/current-campagins"
         );
         const data = await response.json();
         setCampaigns(data);

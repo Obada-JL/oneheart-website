@@ -9,7 +9,9 @@ export const useCounters = () => {
   useEffect(() => {
     const fetchCounters = async () => {
       try {
-        const response = await axios.get("http://localhost:3500/api/counter");
+        const response = await axios.get(
+          "http://145.223.33.75:3500/api/counter"
+        );
         setCounters(response.data);
         setLoading(false);
       } catch (err) {

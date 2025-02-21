@@ -40,7 +40,7 @@ export default function DonatePart() {
       }
 
       const response = await fetch(
-        `http://localhost:3500/api/${endpoint}?limit=4`
+        `http://145.223.33.75:3500/api/${endpoint}?limit=4`
       );
       const data = await response.json();
       setItems(data);
@@ -124,7 +124,7 @@ export default function DonatePart() {
                 <div className="rounded-2xl shadow-md w-350 bg-white">
                   <div>
                     <img
-                      src={`http://localhost:3500/uploads/${
+                      src={`http://145.223.33.75:3500/uploads/${
                         activeCategory === "projects"
                           ? "current-projects"
                           : activeCategory === "campaigns"
