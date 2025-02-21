@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 import { MapPin, Mail, Phone, AtSign } from "lucide-react";
 import whatsapp from "../../public/whatsappContact.svg";
 import telegram from "../../public/telegramContact.svg";
@@ -10,6 +11,7 @@ import SuccessModal from "@/components/SuccessModal";
 
 export default function ContactPage() {
   const { language } = useLanguage();
+  const t = translations[language];
   const [formData, setFormData] = useState({
     senderName: "",
     senderEmail: "",

@@ -1,6 +1,6 @@
 "use client"; // Add this if you're using Next.js 13+ App Router
-// import video from "../../public/video.mp4";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Slider1 from "../../../public/sliderImage1.jpg";
 import startVideoButton from "../../../public/startVideoButton.svg";
 import { useLanguage } from "../../context/LanguageContext";
@@ -49,53 +49,30 @@ const VideoThumbnail = ({ thumbnail, videoSrc, title, date }) => {
 export default function RecentCampagins() {
   const { language } = useLanguage();
   const t = translations[language];
+  const [campaignVideos, setCampaignVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const videos = [
-    {
-      thumbnail: Slider1.src,
-      videoSrc: "https://www.youtube.com/watch?v=haP7irsJLBQ",
-      title:
-        "A campaign to distribute 14 thousand liters of water to our people in ...",
-      date: "28 October 2024",
-    },
-    {
-      thumbnail: Slider1.src,
-      videoSrc: "/video.mp4",
-      title:
-        "A campaign to distribute 14 thousand liters of water to our people in ...",
-      date: "28 October 2024",
-    },
-    {
-      thumbnail: Slider1.src,
-      videoSrc: "/video.mp4",
-      title:
-        "A campaign to distribute 14 thousand liters of water to our people in ...",
-      date: "28 October 2024",
-    },
-    {
-      thumbnail: Slider1.src,
-      videoSrc: "/video.mp4",
-      title:
-        "A campaign to distribute 14 thousand liters of water to our people in ...",
-      date: "28 October 2024",
-    },
-    {
-      thumbnail: Slider1.src,
-      videoSrc: "/video.mp4",
-      title:
-        "A campaign to distribute 14 thousand liters of water to our people in ...",
-      date: "28 October 2024",
-    },
-    {
-      thumbnail: Slider1.src,
-      videoSrc: "/video.mp4",
-      title:
-        "A campaign to distribute 14 thousand liters of water to our people in ...",
-      date: "28 October 2024",
-    },
+  useEffect(() => {
+    const fetchCampaignVideos = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3500/api/campaign-videos"
+        );
+        setCampaignVideos(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Failed to fetch campaign videos:", err);
+        setLoading(false);
+      }
+    };
 
-    // Add more videos here
-  ];
+    fetchCampaignVideos();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
+
   return (
     <div className="container-fluid py-10">
       <div className="flex text-center justify-center mb-8">
@@ -103,8 +80,16 @@ export default function RecentCampagins() {
       </div>
       <div className="px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {videos.map((video, index) => (
-            <VideoThumbnail key={index} {...video} />
+          {campaignVideos.map((video) => (
+            <VideoThumbnail
+              key={video._id}
+              thumbnail={`http://localhost:3500/uploads/campaign-thumbnails/${video.thumbnail}`}
+              videoSrc={`http://localhost:3500/uploads/campaign-videos/${video.video}`}
+              title={video.title} // Use the appropriate language version
+              date={new Date(video.date).toLocaleDateString(
+                language === "ar" ? "ar-SA" : "en-US"
+              )}
+            />
           ))}
         </div>
       </div>
