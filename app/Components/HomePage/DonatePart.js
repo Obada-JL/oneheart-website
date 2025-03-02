@@ -10,6 +10,7 @@ import donateVector from "../../../public/donate-vector.svg";
 import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "../../translations/translations";
 import Link from "next/link";
+import "../../globals.css"
 
 export default function DonatePart() {
   const { language } = useLanguage();
@@ -27,20 +28,20 @@ export default function DonatePart() {
           endpoint = "current-projects";
           break;
         case "campaigns":
-          endpoint = "current-campagins";
+          endpoint = "current-campaigns";
           break;
         case "sponsorship":
           endpoint = "sponsorships";
           break;
         case "situations":
-          endpoint = "support-campagins";
+          endpoint = "support-campaigns";
           break;
         default:
           endpoint = "current-projects";
       }
 
       const response = await fetch(
-        `http://145.223.33.75:3500/api/${endpoint}?limit=4`
+        `http://localhost:3500/api/${endpoint}?limit=4`
       );
       const data = await response.json();
       setItems(data);
@@ -57,7 +58,9 @@ export default function DonatePart() {
   }, [activeCategory]);
 
   const handleCategoryClick = (category) => {
-    setActiveCategory(category);
+    setActiveCategory(category);    
+    fetchItems(category);
+    console.log(items)
   };
 
   const getViewAllLink = () => {
@@ -82,29 +85,31 @@ export default function DonatePart() {
       </div>
 
       <div className="flex justify-center mt-8 mb-10 px-4 overflow-x-auto">
-        <div className="categorysContainer flex-wrap md:flex-nowrap min-w-[300px] w-full md:w-auto">
+        <div className="categorysContainer flex flex-wrap md:flex-nowrap min-w-[300px] w-full md:w-auto gap-2">
           {[
-            { id: "projects", label: t.projects },
-            { id: "campaigns", label: t.campaigns },
-            { id: "sponsorship", label: t.sponsorship },
+            { id: "projects", label: t["projects"] },
+            { id: "campaigns", label: t["campaigns"] },
+            { id: "sponsorship", label: t["sponsorship"] },
             // { id: "situations", label: t.Situations },
           ].map((category) => (
-            <div
+            <button
               key={category.id}
-              className={`category w-full md:w-auto mb-2 md:mb-0 ${
-                activeCategory === category.id ? "ButtonActive" : ""
-              }`}
               onClick={() => handleCategoryClick(category.id)}
+              className={`px-6 py-2 text-sm font-semibold rounded-full transition ${
+                activeCategory === category.id
+                  ? "bg-[#47a896] text-white"
+                  : "bg-gray-100 text-gray-800"
+              }`}
             >
               {category.label}
-            </div>
+            </button>
           ))}
         </div>
       </div>
 
       <div className="fieldsShadow bg-gray-50 py-8 px-4 w-full md:w-[90%] lg:w-[80%] mx-auto mb-10">
         {loading ? (
-          <div className="text-center py-8">Loading...</div>
+          <div className="text-center py-8">{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>
         ) : (
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -124,7 +129,7 @@ export default function DonatePart() {
                 <div className="rounded-2xl shadow-md w-350 bg-white">
                   <div>
                     <img
-                      src={`http://145.223.33.75:3500/uploads/${
+                      src={`http://localhost:3500/uploads/${
                         activeCategory === "projects"
                           ? "current-projects"
                           : activeCategory === "campaigns"

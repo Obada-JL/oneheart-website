@@ -6,8 +6,16 @@ import startVideoButton from "../../../public/startVideoButton.svg";
 import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "../../translations/translations";
 
-const VideoThumbnail = ({ thumbnail, videoSrc, title, date }) => {
+const VideoThumbnail = ({
+  thumbnail,
+  videoSrc,
+  title,
+  titleAr,
+  language,
+  date,
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const displayTitle = language === "ar" ? titleAr : title;
 
   const handlePlayVideo = () => setIsPlaying(true);
 
@@ -17,7 +25,7 @@ const VideoThumbnail = ({ thumbnail, videoSrc, title, date }) => {
         {!isPlaying ? (
           <img
             src={thumbnail}
-            alt="Video Thumbnail"
+            alt={displayTitle}
             className="w-full object-cover rounded-2xl"
           />
         ) : (
@@ -33,10 +41,10 @@ const VideoThumbnail = ({ thumbnail, videoSrc, title, date }) => {
               className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"
               onClick={handlePlayVideo}
             >
-              <img src={startVideoButton.src} />
+              <img src={startVideoButton.src} alt="Play" />
             </button>
             <div className="absolute bottom-4 left-4 text-white z-10">
-              <h3 className="text-lg font-bold mb-1">{title}</h3>
+              <h3 className="text-lg font-bold mb-1">{displayTitle}</h3>
               <p className="text-sm">{date}</p>
             </div>
           </div>
@@ -56,7 +64,7 @@ export default function RecentCampagins() {
     const fetchCampaignVideos = async () => {
       try {
         const response = await axios.get(
-          "http://145.223.33.75:3500/api/campaign-videos"
+          "http://localhost:3500/api/campaign-videos"
         );
         setCampaignVideos(response.data);
         setLoading(false);
@@ -70,7 +78,7 @@ export default function RecentCampagins() {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return <div className="text-center py-10">{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>;
   }
 
   return (
@@ -83,9 +91,11 @@ export default function RecentCampagins() {
           {campaignVideos.map((video) => (
             <VideoThumbnail
               key={video._id}
-              thumbnail={`http://145.223.33.75:3500/uploads/campaign-thumbnails/${video.thumbnail}`}
-              videoSrc={`http://145.223.33.75:3500/uploads/campaign-videos/${video.video}`}
-              title={video.title} // Use the appropriate language version
+              thumbnail={`http://localhost:3500/uploads/campaign-thumbnails/${video.thumbnail}`}
+              videoSrc={`http://localhost:3500/uploads/campaign-videos/${video.video}`}
+              title={video.title}
+              titleAr={video.titleAr}
+              language={language}
               date={new Date(video.date).toLocaleDateString(
                 language === "ar" ? "ar-SA" : "en-US"
               )}

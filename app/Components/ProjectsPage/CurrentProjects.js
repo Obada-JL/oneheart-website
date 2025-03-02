@@ -18,7 +18,7 @@ export default function CurrentProjects({ selectedCategory }) {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          "http://145.223.33.75:3500/api/current-projects"
+          "http://localhost:3500/api/current-projects"
         );
         const data = await response.json();
         setProjects(data);
@@ -32,9 +32,16 @@ export default function CurrentProjects({ selectedCategory }) {
     fetchProjects();
   }, []);
 
+  const getLocalizedContent = (field, arField) => {
+    console.log(field, arField);
+    if (!field && !arField) return '';
+    return language === 'en' ? field : arField;
+  };
+
   const filteredProjects = projects.filter(
     (project) =>
-      selectedCategory === "All" || project.category === selectedCategory
+      selectedCategory === "All" || 
+      getLocalizedContent(project.category, project.categoryAr) === selectedCategory
   );
 
   if (isLoading) return <div>Loading...</div>;
@@ -55,24 +62,25 @@ export default function CurrentProjects({ selectedCategory }) {
           1024: { slidesPerView: 3 },
           1280: { slidesPerView: 4 },
         }}
-        className="w-full"
+        className="w-full "
+        dir={language === 'ar' ? 'rtl' : 'ltr'}
       >
         {filteredProjects.map((project) => (
-          <SwiperSlide key={project._id} className="p-2 md:p-4">
-            <div className="rounded-2xl shadow-md bg-white h-full">
-              <div className="aspect-w-16 aspect-h-9">
+          <SwiperSlide key={project._id} className="p-2 md:p-4 ">
+            <div className="rounded-2xl shadow-md bg-white h-full h-[500px]">
+              <div className="aspect-w-16 aspect-h-9 h-[350px]">
                 <img
-                  src={`http://145.223.33.75:3500/uploads/current-projects/${project.image}`}
-                  alt={project.title}
+                  src={`http://localhost:3500/uploads/current-projects/${project.image}`}
+                  alt={getLocalizedContent(project.title, project.titleAr)}
                   className="rounded-t-2xl w-full h-full object-cover"
                 />
               </div>
               <div className="p-4 text-center">
                 <div className="text-lg md:text-xl lg:text-2xl font-semibold donation-button">
-                  {project.title}
+                  {getLocalizedContent(project.title, project.titleAr)}
                 </div>
                 <div className="text-sm text-gray-600 mt-2 line-clamp-3">
-                  {project.description}
+                  {getLocalizedContent(project.description, project.descriptionAr)}
                 </div>
                 <div className="mt-4">
                   <Link

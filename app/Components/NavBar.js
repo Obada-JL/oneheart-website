@@ -64,7 +64,10 @@ export default function NavBar() {
         </button>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex lg:items-center lg:gap-5">
+        <div
+          className="hidden lg:flex lg:items-center lg:gap-5"
+          dir={`${language == "ar" ? "rtl" : "ltr"}`}
+        >
           {navLinks.map((link) => (
             <a
               key={link.href}

@@ -8,16 +8,33 @@ import Programs from "./Components/HomePage/Programs";
 import RecentCampagins from "./Components/HomePage/RecentCampagins";
 import PageTransition from "@/components/PageTransition";
 import AnimatedSection from "@/components/AnimatedSection";
+import { useLanguage } from './context/LanguageContext';
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+
+const AboutSection = dynamic(() => import('./aboutSections/AboutSection'), {
+  ssr: false,
+  loading: () => <div>{language === 'ar' ? 'جاري تحميل القسم...' : 'Loading About Section...'}</div>
+});
+
+const GeneralFields = dynamic(() => import('./aboutSections/GeneralFieldsContent'), {
+  ssr: false,
+  loading: () => <div>{language === 'ar' ? 'جاري تحميل المحتوى...' : 'Loading General Fields...'}</div>
+});
 
 export default function Home() {
+  const { language } = useLanguage();
+  
   return (
     <PageTransition>
       <main className="HomePage flex-1">
-        <SliderComponent />
-        <AboutPart />
-        <DonatePart />
-        <Programs />
-        <RecentCampagins />
+        <Suspense fallback={<div>{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>}>
+          <SliderComponent />
+          <AboutPart />
+          <DonatePart />
+          <Programs />
+          <RecentCampagins />
+        </Suspense>
       </main>
 
       {/* Hero Section */}

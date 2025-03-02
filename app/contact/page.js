@@ -33,7 +33,7 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://145.223.33.75:3500/api/messages", {
+      const response = await fetch("http://localhost:3500/api/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,13 +63,13 @@ export default function ContactPage() {
   };
 
   return (
-    <div>
-      {/* Header section */}
+    <div dir={language === 'ar' ? 'rtl' : 'ltr'} className="mb-10">
+      {/* Header section - translated */}
       <div className="mb-8">
         <div className="relative p-4 md:p-7 flex items-center justify-center overflow-hidden bg-[#47a896]">
           <h1 className="text-white text-2xl flex gap-1 items-center font-bold relative z-10">
             <span className="text-yellow-500 font-bold text-3xl">|</span>
-            <div>Contact Us</div>
+            <div>{t.contactUs}</div>
           </h1>
           <div
             className="absolute inset-0 flex justify-center items-center"
@@ -109,80 +109,79 @@ export default function ContactPage() {
       {/* Contact content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Contact Form */}
+          {/* Contact Form - translated */}
           <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6">
             <h2 className="text-2xl flex gap-2 font-semibold mb-4 text-gray-800">
               <span className="text-yellow-500 font-bold text-3xl">|</span>
-              <div>Contact Us</div>
+              <div>{t.contactUs}</div>
             </h2>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-3">
-                <label>Name </label>
+                <label>{t.name}</label>
                 <input
                   type="text"
                   name="senderName"
                   value={formData.senderName}
                   onChange={handleChange}
-                  placeholder="Name"
+                  placeholder={t.enterYourName}
                   className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-2xl py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   required
                 />
               </div>
               <div className="flex flex-col gap-3">
-                <label>Email </label>
+                <label>{t.email}</label>
                 <input
                   type="email"
                   name="senderEmail"
                   value={formData.senderEmail}
                   onChange={handleChange}
-                  placeholder="Email"
+                  placeholder={t.enterYourEmail}
                   className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-2xl py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                   required
                 />
               </div>
-              <div className="flex flex-col gap-3 pb-3">
-                <label>Message </label>
+              <div className="flex flex-col gap-3">
+                <label>{t.message}</label>
                 <textarea
                   name="recievedMessage"
                   value={formData.recievedMessage}
                   onChange={handleChange}
-                  placeholder="Message"
+                  placeholder={t.enterYourMessage}
+                  rows="5"
                   className="appearance-none block w-full bg-white text-gray-700 border border-gray-500 rounded-2xl py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                  rows={4}
                   required
-                />
+                ></textarea>
               </div>
-
               <button
                 type="submit"
+                className="bg-[#47a896] text-white py-3 px-6 rounded-2xl hover:bg-[#3a8a7b] transition-colors duration-300"
                 disabled={loading}
-                className="flex justify-center text-white pt-3 pb-3 mt-10 rounded-lg hover:bg-green-600 transition"
                 style={{
-                  backgroundColor: "#47a896",
+                  display: "block",
                   margin: "0 auto",
                   width: "250px",
                 }}
               >
-                {loading ? "Sending..." : "Send"}
+                {loading ? t.sending : t.send}
               </button>
             </form>
           </div>
 
-          {/* Contact Information */}
+          {/* Contact Information - translated */}
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6">
               <h2 className="text-xl md:text-2xl flex gap-2 font-semibold mb-4 text-gray-800">
                 <span className="text-yellow-500 font-bold text-3xl">|</span>
-                <div>Contact Information</div>
+                <div>{t.contactInfo}</div>
               </h2>
               <div className="space-y-4 md:space-y-6 text-gray-700">
                 <div className="flex items-center gap-3 md:gap-4">
                   <img src={whatsapp.src} width={50} />
-                  <span>+972 56-700-7483</span>
+                  <span>{t.phoneContact}</span>
                 </div>
                 <div className="flex items-center gap-3 md:gap-4">
                   <img src={email.src} width={50} />
-                  <span>For.Gaza@com.org</span>
+                  <span>{t.emailContact}</span>
                 </div>
                 <div className="flex items-center gap-3 md:gap-4">
                   <img src={telegram.src} width={50} />
@@ -190,13 +189,13 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-center gap-3 md:gap-4">
                   <img src={location.src} width={50} />
-                  <span>Palestine, Gaza</span>
+                  <span>{t.location}</span>
                 </div>
               </div>
             </div>
 
             {/* Map */}
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-[300px] md:h-[400px]">
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-[250px] md:h-[250px]">
               <iframe
                 title="Gaza Location"
                 className="w-full h-64 rounded-2xl"
@@ -210,7 +209,6 @@ export default function ContactPage() {
       </div>
 
       <SuccessModal isOpen={showModal} onClose={() => setShowModal(false)} />
-      {/* <SuccessModal isOpen={true} onClose={() => setShowModal(true)} /> */}
     </div>
   );
 }

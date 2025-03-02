@@ -10,36 +10,68 @@ import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "../../translations/translations";
 import { useEffect, useState } from "react";
 
-const ProjectCard = ({ image, title, details }) => {
+const ProjectCard = ({ project }) => {
   const { language } = useLanguage();
   const t = translations[language];
 
+  // Helper function to get localized content based on language
+  const getLocalizedContent = (field, arField) => {
+    if (!field && !arField) return '';
+    return language === 'ar' ? arField : field;
+  };
+
   return (
-    <div className="rounded-2xl shadow-md bg-white w-full max-w-[350px] mx-auto">
-      <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-2xl">
+    <div className="rounded-2xl shadow-md bg-white w-full max-w-[350px] h-[500px] mx-auto ">
+      <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-2xl h-[350px]">
         <img
-          src={`http://145.223.33.75:3500/uploads/completed-projects/${image}`}
-          alt={title}
+          src={`http://localhost:3500/uploads/completed-projects/${project.image}`}
+          alt={getLocalizedContent(project.title, project.titleAr)}
           className="w-full h-full object-cover"
         />
       </div>
 
       <div className="p-4">
         <h3 className="text-lg md:text-xl font-semibold donation-button text-center mb-4">
-          {title}
+          {getLocalizedContent(project.title, project.titleAr)}
         </h3>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-0">
           {[
-            { icon: beneficiariesVector, value: details[0].Beneficiary },
-            { icon: donationsVector, value: details[0].fund },
-            { icon: locationVector, value: details[0].location },
-            { icon: calendarVector, value: details[0].duration },
+            { 
+              icon: beneficiariesVector, 
+              value: getLocalizedContent(
+                project.details[0]?.Beneficiary,
+                project.details[0]?.BeneficiaryAr
+              )
+            },
+            { 
+              icon: donationsVector, 
+              value: getLocalizedContent(
+                project.details[0]?.fund,
+                project.details[0]?.fundAr
+              )
+            },
+            { 
+              icon: locationVector, 
+              value: getLocalizedContent(
+                project.details[0]?.location,
+                project.details[0]?.locationAr
+              )
+            },
+            { 
+              icon: calendarVector, 
+              value: getLocalizedContent(
+                project.details[0]?.duration,
+                project.details[0]?.durationAr
+              )
+            },
           ].map((item, index) => (
             <div
               key={index}
               className={`flex items-center justify-center gap-2 p-2 ${
-                index % 2 === 0 ? "border-r" : ""
+                language === 'ar' 
+                  ? index % 2 !== 0 ? "" : "border-l" 
+                  : index % 2 == 0 ? "border-r" : ""
               } ${index < 2 ? "border-b" : ""} borderColorCompleteds`}
             >
               <img src={item.icon.src} className="w-4 h-4 md:w-5 md:h-5" />
@@ -64,8 +96,11 @@ export default function CompletedProjects({ selectedCategory }) {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          "http://145.223.33.75:3500/api/completed-projects"
+          "http://localhost:3500/api/completed-projects"
         );
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
         const data = await response.json();
         setProjects(data);
       } catch (error) {
@@ -80,13 +115,15 @@ export default function CompletedProjects({ selectedCategory }) {
 
   const filteredProjects = projects.filter(
     (project) =>
-      selectedCategory === "All" || project.category === selectedCategory
+      selectedCategory === "All" || 
+      project.category === selectedCategory ||
+      project.categoryAr === selectedCategory
   );
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="container-fluid px-4 py-6 lg:py-8">
+    <div className="container-fluid px-4 py-6 lg:py-8 pb-10">
       <div className="flex text-start mb-4 lg:mb-6">
         <h1 className="text-xl md:text-2xl lg:text-3xl">
           {t.completedProjects}
@@ -103,15 +140,12 @@ export default function CompletedProjects({ selectedCategory }) {
           1024: { slidesPerView: 3 },
           1280: { slidesPerView: 4 },
         }}
-        className="w-full"
+        className="w-full pb-8"
+        dir={language === 'ar' ? 'rtl' : 'ltr'}
       >
         {filteredProjects.map((project) => (
           <SwiperSlide key={project._id}>
-            <ProjectCard
-              image={project.image}
-              title={project.title}
-              details={project.details}
-            />
+            <ProjectCard project={project} />
           </SwiperSlide>
         ))}
       </Swiper>

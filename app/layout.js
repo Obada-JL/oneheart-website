@@ -4,6 +4,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import { AnimatePresence } from "framer-motion";
+import { ClientLayoutWrapper } from "./ClientLayout";
 
 const almarai = Almarai({
   subsets: ["arabic"],
@@ -25,15 +26,17 @@ export default function RootLayout({ children }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <LanguageProvider>
-        <body className={`${almarai.className} vsc-initialized`}>
-          <div className="min-h-screen flex flex-col">
-            <NavBar />
-            <AnimatePresence mode="wait">{children}</AnimatePresence>
-            <Footer />
-          </div>
-        </body>
-      </LanguageProvider>
+      <body className={`${almarai.className} vsc-initialized`}>
+        <LanguageProvider >
+          <ClientLayoutWrapper className={`${almarai.className} vsc-initialized`}>
+            <div className="min-h-screen flex flex-col">
+              <NavBar />
+              <AnimatePresence mode="wait">{children}</AnimatePresence>
+              <Footer />
+            </div>
+          </ClientLayoutWrapper>
+        </LanguageProvider>
+      </body>
     </html>
   );
 }

@@ -16,10 +16,10 @@ export default function AboutPart() {
     const fetchAboutUs = async () => {
       try {
         const response = await axios.get(
-          "http://145.223.33.75:3500/api/about-us"
+          "http://localhost:3500/api/about-us"
         );
         console.log("About us response:", response.data);
-        setAboutDesc(response.data[0].aboutUs.description);
+        setAboutDesc(response.data[0].aboutUs.description[language]);
       } catch (error) {
         console.error("Error fetching about us:", error);
         setAboutDesc(t.aboutDesc); // Fallback to translation
@@ -54,7 +54,7 @@ export default function AboutPart() {
               <div key={counter._id || index} className="counterContainer">
                 <div className="flex justify-center items-center gap-3 mb-3 ps-5 pe-5">
                   <img
-                    src={`http://145.223.33.75:3500/uploads/counterImages/${counter.counterImage}`}
+                    src={`http://localhost:3500/uploads/counterImages/${counter.counterImage}`}
                     alt={counter.counterTitle}
                     width={35}
                   />

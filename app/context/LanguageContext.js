@@ -1,25 +1,32 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const LanguageContext = createContext({
-  language: "en",
-  toggleLanguage: () => {},
-});
+const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
-  const [mounted, setMounted] = useState(false);
+  // Get initial language from localStorage or default to 'en'
   const [language, setLanguage] = useState("en");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
+    // Get saved language on initial load
+    const savedLanguage = localStorage.getItem("preferredLanguage");
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+    }
+    setIsLoading(false);
   }, []);
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "ar" : "en"));
+    const newLanguage = language === "en" ? "ar" : "en";
+    setLanguage(newLanguage);
+    localStorage.setItem("preferredLanguage", newLanguage);
+    // Optional: Update document direction
+    document.documentElement.dir = newLanguage === "ar" ? "rtl" : "ltr";
   };
 
-  if (!mounted) {
-    return null;
+  if (isLoading) {
+    return null; // or a loading spinner
   }
 
   return (
@@ -31,9 +38,6 @@ export function LanguageProvider({ children }) {
 
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (typeof window === 'undefined') {
-    return { language: 'en', toggleLanguage: () => {} };
-  }
   if (!context) {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }

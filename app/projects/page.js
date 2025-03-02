@@ -1,46 +1,81 @@
 "use client";
-import CompletedProjects from "../Components/ProjectsPage/CompletedProjects";
+import { useState, useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../translations/translations";
 import CurrentProjects from "../Components/ProjectsPage/CurrentProjects";
+import CompletedProjects from "../Components/ProjectsPage/CompletedProjects";
 import NeedsSupportProjects from "../Components/ProjectsPage/NeedsSupportProjects";
-import { useState } from "react";
-
-const categories = ["All", "Food", "Health", "Water", "Rapid Response"];
+import { getUniqueCategories } from "../utils/categoryHelpers";
 
 export default function Projects() {
+  const { language } = useLanguage();
+  const t = translations[language];
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAllProjects = async () => {
+      try {
+        const [current, completed, support] = await Promise.all([
+          fetch("http://localhost:3500/api/current-projects").then(res => res.json()),
+          fetch("http://localhost:3500/api/completed-projects").then(res => res.json()),
+          fetch("http://localhost:3500/api/support-projects").then(res => res.json())
+        ]);
+
+        const allProjects = [...current, ...completed, ...support];
+        const uniqueCategories = getUniqueCategories(allProjects);
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllProjects();
+  }, []);
+
+  if (loading) {
+    return <div>{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>;
+  }
 
   return (
-    <div className="mb-8">
-      <div className="overflow-x-auto">
-        <div className="flex flex-nowrap gap-4 px-4 py-5 min-w-max lg:justify-center">
-          {categories.map((category, index) => (
-            <div
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`cursor-pointer flex items-center whitespace-nowrap ${
-                selectedCategory === category ? "donation-button" : ""
-              }`}
-            >
-              {category}
-              {index < categories.length - 1 && (
-                <hr
-                  className={`h-6 w-px ${
-                    selectedCategory === category
-                      ? "bg-[#47a896]"
-                      : "bg-gray-400"
-                  } ml-3`}
-                />
-              )}
-            </div>
-          ))}
+    <div dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={`flex ${language === 'ar' ? 'flex-row-reverse' : 'flex-row'} justify-center gap-4 pt-3 mb-8 flex-wrap`}dir="ltr">
+        <button
+          onClick={() => setSelectedCategory("All")}
+          className={`py-2  text-black ${
+            selectedCategory === "All" ? "" : ""
+          }`}
+        >
+          {language === 'ar' ? 'الكل' : 'All'}
+        </button>
+        {categories.map((category,index) => (
+          <div
+          key={category}
+          onClick={() => setSelectedCategory(category)}
+          className={`cursor-pointer flex items-center whitespace-nowrap ${
+            selectedCategory === category ? "donation-button" : ""
+          }`}
+        >
+          {category}
+          {index < categories.length - 1 && (
+            <hr
+              className={`h-6 w-px ${
+                selectedCategory === category
+                  ? "bg-[#47a896]"
+                  : "bg-gray-400"
+              } ml-3`}
+            />
+          )}
         </div>
+        ))}
       </div>
 
-      <div className="space-y-8">
-        <NeedsSupportProjects selectedCategory={selectedCategory} />
-        <CurrentProjects selectedCategory={selectedCategory} />
-        <CompletedProjects selectedCategory={selectedCategory} />
-      </div>
+      <NeedsSupportProjects selectedCategory={selectedCategory} />
+      <CurrentProjects selectedCategory={selectedCategory} />
+      <CompletedProjects selectedCategory={selectedCategory} />
     </div>
   );
 }

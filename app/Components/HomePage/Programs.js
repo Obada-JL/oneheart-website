@@ -20,7 +20,7 @@ export default function Programs() {
     const fetchPrograms = async () => {
       try {
         const response = await axios.get(
-          "http://145.223.33.75:3500/api/programs"
+          "http://localhost:3500/api/programs"
         );
         setPrograms(response.data);
         setLoading(false);
@@ -34,7 +34,7 @@ export default function Programs() {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return <div className="text-center py-10">{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>;
   }
 
   return (
@@ -61,7 +61,7 @@ export default function Programs() {
               <div className="rounded-2xl shadow-md bg-white">
                 <div>
                   <img
-                    src={`http://145.223.33.75:3500/uploads/programs/${program.image}`}
+                    src={`http://localhost:3500/uploads/programs/${program.image}`}
                     alt={language === "ar" ? program.titleAr : program.title}
                     className="rounded-2xl programsImage"
                   />
@@ -71,7 +71,7 @@ export default function Programs() {
                     {language === "ar" ? program.titleAr : program.title}
                   </div>
                   <div className="text-sm text-gray-600 mt-2">
-                    {program.description}
+                  {language === "ar" ? program.descriptionAr : program.description}
                   </div>
                 </div>
               </div>
