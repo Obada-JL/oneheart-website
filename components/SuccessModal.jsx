@@ -1,8 +1,21 @@
 import React, { useEffect, useRef } from "react";
 import checkIcon from "../public/badge-check.svg";
+import { useLanguage } from "../app/context/LanguageContext";
+import { translations } from "../app/translations/translations";
 
-export default function SuccessModal({ isOpen, onClose }) {
+
+export default function SuccessModal({ isOpen, onClose,  }) {
   const modalRef = useRef();
+  
+  // Dictionary for translations
+  const { language } = useLanguage();
+  const t = translations[language];
+  
+  const getLocalizedContent = (field, arField) => {
+    if (!field && !arField) return '';
+    return language === 'ar' ? arField : field;
+  };
+  // Get translations based on language prop, fallback to English if language not available
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -17,6 +30,20 @@ export default function SuccessModal({ isOpen, onClose }) {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
+  // Auto-close modal after 5 seconds
+  useEffect(() => {
+    let timer;
+    if (isOpen) {
+      timer = setTimeout(() => {
+        onClose();
+      }, 3000); // 5 seconds
+    }
+    
+    return () => {
+      clearTimeout(timer);
     };
   }, [isOpen, onClose]);
 
@@ -67,13 +94,13 @@ export default function SuccessModal({ isOpen, onClose }) {
             className="mt-4 text-xl font-semibold text-gray-900
                          animate-[slideUp_0.3s_ease-in-out_0.1s]"
           >
-            Message Sent Successfully!
+           {t.successTitle}
           </h3>
           <p
             className="mt-2 text-gray-600
                        animate-[slideUp_0.3s_ease-in-out_0.2s]"
           >
-            Thank you for contacting us. We'll get back to you soon.
+            {t.successMessage}
           </p>
         </div>
       </div>

@@ -74,6 +74,9 @@ export const translations = {
     loading: "Loading...",
     all: "All",
     remaining:"remaining",
+    donate: "Donate",
+    successTitle: "Message Sent Successfully!",
+    successMessage: "Thank you for contacting us. We'll get back to you soon.",
     projectCategories: {
       medical: "Medical",
       education: "Education",
@@ -147,6 +150,8 @@ export const translations = {
     enterYourName: "أدخل اسمك",
     enterYourEmail: "أدخل بريدك الإلكتروني",
     enterYourMessage: "أدخل رسالتك",
+        successTitle: "تم إرسال الرسالة بنجاح!",
+    successMessage: "شكراً للتواصل معنا. سنرد عليك قريباً.",
     warmHeartCampaign: "صور حملة دفء القلوب",
     warmHeartDesc: "تقدم حملة \"دفء القلوب\" في غزة ملابس الشتاء للعائلات المحتاجة خلال فصل الشتاء القاسي.",
     ourGoal: "هدفنا",
@@ -157,6 +162,7 @@ export const translations = {
     all: "الكل",
     paid: "تم دفع",
     remaining:"المتبقي",
+    donate: "تبرع",
     projectCategories: {
       medical: "طبي",
       education: "تعليم",

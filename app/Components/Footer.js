@@ -190,7 +190,7 @@ export default function Footer() {
           </div>
           <div className="w-full md:w-65 flex flex-col md:flex-row md:justify-around md:gap-x-20">
             <div>
-              <div className="inline-block footerLink mb-2">
+              <div className={`inline-block ${language === "ar" ? "text-right" : "text-left"} footerLink mb-2`}>
                 {t.contactUsFooter}
               </div>
               <ol className="list-none text-white gap-3 flex flex-col">
@@ -201,7 +201,7 @@ export default function Footer() {
               </ol>
             </div>
             <div>
-              <div className="inline-block footerLink mb-2">{t.donations}</div>
+              <div className={`inline-block ${language === "ar" ? "text-right" : "text-left"} footerLink mb-2`}>{t.donations}</div>
               <ol className="list-none text-white gap-3 flex flex-col">
                 <li>{t.campaigns}</li>
                 <li>{t.projects}</li>
@@ -209,7 +209,7 @@ export default function Footer() {
               </ol>
             </div>
             <div>
-              <div className="inline-block footerLink mb-2">{t.goTo}</div>
+              <div className={`inline-block ${language === "ar" ? "text-right" : "text-left"} footerLink mb-2`}>{t.goTo}</div>
               <ol className="list-none text-white gap-3 flex flex-col">
                 <li>{t.home}</li>
                 <li>{t.donate}</li>

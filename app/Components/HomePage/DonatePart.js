@@ -7,10 +7,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import donateVector from "../../../public/donate-vector.svg";
+import donateVectorWhite from "../../../public/donate-vector-white.svg";
 import { useLanguage } from "../../context/LanguageContext";
 import { translations } from "../../translations/translations";
 import Link from "next/link";
 import "../../globals.css"
+import PaymentMethodModal from "../PaymentMethodModal";
 
 export default function DonatePart() {
   const { language } = useLanguage();
@@ -18,6 +20,9 @@ export default function DonatePart() {
   const [activeCategory, setActiveCategory] = useState("projects");
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
 
   const fetchItems = async (category) => {
     setLoading(true);
@@ -25,7 +30,7 @@ export default function DonatePart() {
       let endpoint;
       switch (category) {
         case "projects":
-          endpoint = "current-projects";
+          endpoint = "current-projects";  
           break;
         case "campaigns":
           endpoint = "current-campaigns";
@@ -58,9 +63,11 @@ export default function DonatePart() {
   }, [activeCategory]);
 
   const handleCategoryClick = (category) => {
-    setActiveCategory(category);    
+    setActiveCategory(category);
     fetchItems(category);
-    console.log(items)
+  };
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
   };
 
   const getViewAllLink = () => {
@@ -77,7 +84,10 @@ export default function DonatePart() {
         return "/";
     }
   };
-
+  const handleDonateClick = (item) => {
+    setSelectedItem(item);
+    setShowPaymentModal(true);
+  };
   return (
     <div className="mt-3 px-4">
       <div className="flex text-center justify-center mb-5">
@@ -143,7 +153,7 @@ export default function DonatePart() {
                           : item.image
                       }`}
                       alt={language === "ar" ? item.titleAr : item.title}
-                      className="w-350 rounded-t-2xl aspect-video object-cover"
+                      className="h-[250px] rounded-t-2xl aspect-video object-cover"
                     />
                   </div>
                   <div className="p-4 categorysDescription">
@@ -156,14 +166,34 @@ export default function DonatePart() {
                         : item.description}
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                      <div className="flex items-center gap-2 donation-button categorysDonation">
+                      {/* <div className="flex items-center gap-2 donation-button categorysDonation">
                         <img
                           src={donateVector.src}
                           className="w-6 h-6"
                           alt="donate"
                         />
                         <span className="font-medium">{t.donate}</span>
-                      </div>
+                      </div> */}
+                      <div className="flex justify-center items-center mt-4">
+                      <button 
+                        className="flex items-center gap-2 donation-button categorysDonation mx-auto border border-[#47a896] rounded hover:bg-[#47a896] hover:text-white transition-all duration-300 px-3 py-2 group"
+                        onClick={() => handleDonateClick(item)}
+                      >
+                        <img
+                          src={donateVector.src} 
+                          className="w-5 h-5 md:w-6 md:h-6 group-hover:hidden"
+                          alt="donate"
+                        />
+                        <img
+                          src={donateVectorWhite.src} 
+                          className="w-5 h-5 md:w-6 md:h-6 hidden group-hover:block"
+                          alt="donate"
+                        />
+                        <span className="font-medium text-sm md:text-base">
+                          {t.donate}
+                        </span>
+                      </button>
+                    </div>
                       <Link
                         href={`/${activeCategory}/${item._id}`}
                         className="font-medium cursor-pointer gap-2 flex items-center"
@@ -191,13 +221,19 @@ export default function DonatePart() {
           >
             <Button
               variant="outline"
-              className="allButton border-green-600 px-6 py-2"
+              className=" px-6 py-2 donation-button categorysDonation mx-auto border border-[#47a896] rounded hover:bg-[#47a896] hover:text-white"
             >
               {t.viewAll}
             </Button>
           </Link>
         </div>
       </div>
+      <PaymentMethodModal 
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        selectedItem={selectedItem}
+        itemType="campagin"
+      />
     </div>
   );
 }

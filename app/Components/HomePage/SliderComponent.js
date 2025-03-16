@@ -7,13 +7,18 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Link from "next/link";
 import donateVector from "../../../public/donate-vector.svg";
+import donateVectorWhite from "../../../public/donate-vector-white.svg";
 import { useEffect, useState } from "react";
+import PaymentMethodModal from "../PaymentMethodModal";
 
 export default function SliderComponent() {
   const { language } = useLanguage();
   const t = translations[language];
   const [slides, setSlides] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
 
   useEffect(() => {
     const fetchSliders = async () => {
@@ -34,7 +39,10 @@ export default function SliderComponent() {
 
     fetchSliders();
   }, []);
-
+  const handleDonateClick = (item) => {
+    setSelectedItem(item);
+    setShowPaymentModal(true);
+  };
   if (isLoading) {
     return <div>{language === 'ar' ? 'جاري التحميل...' : 'Loading...'}</div>;
   }
@@ -92,19 +100,25 @@ export default function SliderComponent() {
                     language === "ar" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <Link
-                    href={slide.donationsLink}
-                    className="donation-button flex btn bg-white gap-3 rounded-xl p-3 ps-4 pe-4 group"
-                  >
-                    <img
-                      src={donateVector.src}
-                      width={22}
-                      className="group-hover:brightness-0 group-hover:invert"
-                    />
-                    <div className="font-bold flex items-center group-hover:text-white">
-                      {language === "ar" ? "تبرع سريع" : "Quick donation"}
-                    </div>
-                  </Link>
+                    <button
+                      onClick={() => handleDonateClick(slide)}
+                      className="donation-button flex btn bg-white gap-3 rounded-xl p-3 ps-4 pe-4 group hover:bg-[#47a896] transition-all duration-200"
+                    >
+                      <img
+                        src={donateVector.src}
+                        width={22}
+                        className="w-5 h-5 md:w-6 md:h-6 block group-hover:hidden"
+                        alt="donate"
+                      />
+                      <img
+                        src={donateVectorWhite.src}
+                        className="w-5 h-5 md:w-6 md:h-6 hidden group-hover:block"
+                        alt="donate-white"
+                      />
+                      <div className="font-bold flex items-center text-[#47a896] group-hover:text-white">
+                        {language === "ar" ? "تبرع سريع" : "Quick donation"}
+                      </div>
+                    </button>
                   <Link
                     href={slide.detailsLink}
                     className="details-link flex items-center gap-2 group"
@@ -135,6 +149,12 @@ export default function SliderComponent() {
           </SwiperSlide>
         ))}
       </Swiper>
+      <PaymentMethodModal 
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        selectedItem={selectedItem}
+        itemType="campagin"
+      />
     </div>
   );
 }

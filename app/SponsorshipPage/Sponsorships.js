@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import axios from "axios";
 import donateVector from "../../public/donate-vector.svg";
+import donateVectorWhite from "../../public/donate-vector-white.svg";
 import "../globals.css"
 import { translations } from "../translations/translations";
+import PaymentMethodModal from "../Components/PaymentMethodModal";
 
 export default function Sponsorships({ selectedCategory }) {
   const { language } = useLanguage();
   const [sponsorships, setSponsorships] = useState([]);
+  const [selectedSponsorship, setSelectedSponsorship] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const t = translations[language];
   useEffect(() => {
@@ -33,21 +37,23 @@ export default function Sponsorships({ selectedCategory }) {
 
     fetchSponsorships();
   }, [selectedCategory]);
+  const handleDonateClick = (sponsorship) => {
+    setSelectedSponsorship(sponsorship);
+    setShowPaymentModal(true);
+  };
 
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+  };
   if (loading) {
     return <div className="text-center py-10">Loading...</div>;
   }
 
   return (
     <div className="container-fluid px-4 py-8">
-      <div className="flex text-start mb-6">
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold">
-          {language === "en" ? "Needs Your Support" : "يحتاج دعمك"}
-        </h1>
-      </div>
       <div className="bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+          <div className="flex flex-wrap gap-4 justify-center items-center">
           {sponsorships.map((sponsorship) => {
               const total = Number(sponsorship.total) || 0;
               const remaining = Number(sponsorship.remaining) || 0;
@@ -65,17 +71,17 @@ export default function Sponsorships({ selectedCategory }) {
                 transform : language === "ar"?"translateX(50%)":"translateX(-50%)"
               };
               return (
-                <div key={sponsorship.id} className="w-full h-[475px]" >
-                  <div className="rounded-2xl shadow-md bg-white w-full h-full flex flex-col justify-between">
-                    <div className="aspect-w-16 aspect-h-9">
+                <div key={sponsorship.id} className="w-[300px] h-[475px]" >
+                  <div className="rounded-2xl shadow-md bg-white w-full h-full flex flex-col justify-around">
+                    <div className="aspect-w-18 aspect-h-9">
                       <img
                         src={`http://localhost:3500/uploads/sponsorships/${sponsorship.sponsorshipImage}`}
                         alt={sponsorship.title}
-                        className="w-full h-[250px] object-cover rounded-t-2xl"
+                        className="w-full h-[250px] object-cover rounded-2xl"style={{boxShadow: "-5px 5px 10px 0px #0967391F"}}
                       />
                     </div>
-                    <div className="p-4 categorysDescription">
-                      <div className="text-xl font-semibold title">
+                    <div className="p-4 pt-0 categorysDescription">
+                      <div className="text-xl font-semibold title text-[#47A896]">
                         {language == "ar"? sponsorship.titleAr:sponsorship.title}
                       </div>
                       <div className="text-sm text-gray-600 mt-2">
@@ -110,16 +116,24 @@ export default function Sponsorships({ selectedCategory }) {
     {/* <span className="text-start text-gray-700 text-xs">
                           Remaining ${sponsorship.remaining} per month
                         </span> */}
-                      <div className="flex justify-center items-center mt-4">
-                        <div className="flex items-center gap-2 donation-button categorysDonation">
-                          <img
-                            src={donateVector.src}
-                            className="w-6 h-6"
-                            alt="donate"
-                          />
-                          <span className="font-medium">Quick Donation</span>
-                        </div>
-                      </div>
+          <button 
+            className="flex mt-2 items-center gap-2 donation-button categorysDonation mx-auto border border-[#47a896] rounded hover:bg-[#47a896] hover:text-white transition-all duration-300 px-3 py-2 group"
+            onClick={() => handleDonateClick(sponsorship)}
+          >
+            <img
+              src={donateVector.src}
+              className="w-5 h-5 md:w-6 md:h-6 group-hover:hidden"
+              alt="donate"
+            />
+            <img
+              src={donateVectorWhite.src}
+              className="w-5 h-5 md:w-6 md:h-6 hidden group-hover:block"
+              alt="donate"
+            />
+            <span className="font-medium text-sm md:text-base">
+              {language === 'ar' ? 'تبرع سريع' : 'Quick Donation'}
+            </span>
+          </button>
                     </div>
                   </div>
                 </div>
@@ -128,6 +142,12 @@ export default function Sponsorships({ selectedCategory }) {
           </div>
         </div>
       </div>
+      <PaymentMethodModal
+        isOpen={showPaymentModal}
+        onClose={handleCloseModal}
+        selectedItem={selectedSponsorship}
+        itemType="sponsorship"
+      />
     </div>
   );
 }

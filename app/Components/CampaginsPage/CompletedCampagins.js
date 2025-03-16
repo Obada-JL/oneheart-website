@@ -18,12 +18,12 @@ const ProjectCard = ({ image, title, details }) => {
   const t = translations[language];
 
   return (
-    <div className="rounded-2xl shadow-md bg-white w-full max-w-[350px] mx-auto">
-      <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-t-2xl">
+    <div className="rounded-2xl shadow-md bg-white w-full max-w-[350px] mx-auto"dir="ltr">
+      <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-2xl"style={{boxShadow: "-5px 5px 10px 0px #0967391F"}}>
         <img
           src={`http://localhost:3500/uploads/completed-campaigns/${image}`}
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-full object-cover h-[250px]"
         />
       </div>
 
@@ -32,8 +32,8 @@ const ProjectCard = ({ image, title, details }) => {
           {title}
         </h3>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex gap-2 justify-center items-center border-r border-b border-gray-200 p-2 borderColorCompleteds">
+        <div className="grid grid-cols-2 gap-0">
+          <div className="flex gap-2 justify-center items-center border-r border-b  p-2 borderColorCompleted border-[#FFAC006B]">
             <div className="text-gray-500 font-semibold">
               <img src={beneficiariesVector.src} width={20} />
             </div>
@@ -42,14 +42,14 @@ const ProjectCard = ({ image, title, details }) => {
             </div>
           </div>
 
-          <div className="flex gap-2 items-center justify-center border-b border-gray-200 p-2 borderColorCompleteds">
+          <div className="flex gap-2 items-center justify-center border-b  p-2 borderColorCompleted border-[#FFAC006B]">
             <div className="text-gray-500 font-semibold">
               <img src={donationsVector.src} width={20} />
             </div>
             <div className="text-gray-500 flex gap-2">{details[0].fund}</div>
           </div>
 
-          <div className="flex gap-2 justify-center items-center border-r border-gray-200 p-2 borderColorCompleteds">
+          <div className="flex gap-2 justify-center items-center border-r  p-2 borderColorCompleted border-[#FFAC006B]">
             <div className="text-gray-500 font-semibold">
               <img src={locationVector.src} width={20} />
             </div>
@@ -58,7 +58,7 @@ const ProjectCard = ({ image, title, details }) => {
             </div>
           </div>
 
-          <div className="flex gap-2 justify-center items-center p-2 borderColorCompleteds">
+          <div className="flex gap-2 justify-center items-center p-2 borderColorCompleted border-[#FFAC006B]">
             <div className="text-gray-500 font-semibold">
               <img src={calendarVector.src} width={20} />
             </div>
@@ -77,17 +77,25 @@ export default function CompletedCampagins({ selectedCategory }) {
   const t = translations[language];
   const [campaigns, setCampaigns] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3500/api/completed-campagins"
-        );
+        const response = await fetch("http://localhost:3500/api/completed-campaigns");
+        if (!response.ok) {
+          throw new Error(`Failed to fetch campaigns: ${response.statusText}`);
+        }
         const data = await response.json();
+        if (!data || !Array.isArray(data)) {
+          console.error("Invalid data format received:", data);
+          throw new Error('Invalid data format received from server');
+        }
         setCampaigns(data);
       } catch (error) {
         console.error("Error fetching campaigns:", error);
+        setError(error.message);
+        setCampaigns([]);
       } finally {
         setIsLoading(false);
       }
@@ -96,10 +104,12 @@ export default function CompletedCampagins({ selectedCategory }) {
     fetchCampaigns();
   }, []);
 
-  const filteredCampaigns = campaigns.filter(
-    (campaign) =>
-      selectedCategory === "All" || campaign.category === selectedCategory
-  );
+  const filteredCampaigns = Array.isArray(campaigns) 
+    ? campaigns.filter(
+        (campaign) =>
+          selectedCategory === "All" || campaign.category === selectedCategory
+      )
+    : [];
 
   if (isLoading) return <div>Loading...</div>;
 

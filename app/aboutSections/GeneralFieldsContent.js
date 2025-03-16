@@ -78,7 +78,7 @@ export default function GeneralFieldsContent() {
                 <img
                   src={`${BASE_URL}/uploads/aboutUs/${content.photo}`}
                   alt={`${sectionTitles[titleKey][language]} Image`}
-                  className="rounded-lg shadow-lg"
+                  className="rounded-lg shadow-lg max-md:hidden"
                   style={{
                     width: "500px",
                     height: "350px",
@@ -96,7 +96,7 @@ export default function GeneralFieldsContent() {
                 <img
                   src={`${BASE_URL}/uploads/aboutUs/${content.photo}`}
                   alt={`${sectionTitles[titleKey][language]} Image`}
-                  className="rounded-lg shadow-lg"
+                  className="rounded-lg shadow-lg max-md:hidden"
                   style={{
                     width: "500px",
                     height: "350px",

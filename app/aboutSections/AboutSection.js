@@ -27,9 +27,9 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center me-12">
+    <div className="flex items-center justify-center me-12 max-md:flex-col">
       <div
-        className="flex items-center justify-center gap-8"
+        className="flex items-center justify-center gap-8 max-md:flex-col"
         style={{ width: "80vw" }}
       >
         <div className="md:relative ms-12" style={{ width: "500px" }}>
@@ -41,7 +41,7 @@ export default function AboutSection() {
           </div>
           {/* Center Circle with Text */}
           <div
-            className="absolute md:order-none z-5 transform -translate-y-1/2 md:translate-y-0 w-24 h-24 bg-yellow-500 flex items-center justify-center rounded-full shadow-md border"
+            className="absolute md:order-none z-5 max-md:top[calc(50%+45px)] transform -translate-y-1/2 md:translate-y-0 w-24 h-24 bg-yellow-500 flex items-center justify-center rounded-full shadow-md border"
             style={{
               left: "calc(50% - 45px)",
               top: "calc(50% - 45px)",
@@ -52,7 +52,7 @@ export default function AboutSection() {
               {language === 'ar' ? 'فريق قلب واحد' : 'One Heart Team'}
             </p>
           </div>
-          <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 p-6 bg-white"dir="ltr">
+          <div className="relative flex flex-row items-center justify-center gap-6 p-6 bg-white"dir="ltr">
             {/* Images from API */}
             {aboutData?.aboutUs?.photos?.map((photo, index) => (
               <div
