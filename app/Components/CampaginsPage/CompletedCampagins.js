@@ -82,7 +82,7 @@ export default function CompletedCampagins({ selectedCategory }) {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await fetch("http://localhost:3500/api/completed-campaigns");
+        const response = await fetch("https://oneheart.team/api/completed-campaigns");
         if (!response.ok) {
           throw new Error(`Failed to fetch campaigns: ${response.statusText}`);
         }

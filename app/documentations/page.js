@@ -12,7 +12,7 @@ export default function DocumentationsPage() {
   useEffect(() => {
     const fetchDocumentations = async () => {
       try {
-        const response = await fetch("http://localhost:3500/api/documentations");
+        const response = await fetch("https://oneheart.team/api/documentations");
         const data = await response.json();
         setDocumentations(data);
       } catch (error) {

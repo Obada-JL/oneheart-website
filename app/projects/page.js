@@ -18,9 +18,9 @@ export default function Projects() {
     const fetchAllProjects = async () => {
       try {
         const [current, completed, support] = await Promise.all([
-          fetch("http://localhost:3500/api/current-projects").then(res => res.json()),
-          fetch("http://localhost:3500/api/completed-projects").then(res => res.json()),
-          fetch("http://localhost:3500/api/support-projects").then(res => res.json())
+          fetch("https://oneheart.team/api/current-projects").then(res => res.json()),
+          fetch("https://oneheart.team/api/completed-projects").then(res => res.json()),
+          fetch("https://oneheart.team/api/support-projects").then(res => res.json())
         ]);
 
         const allProjects = [...current, ...completed, ...support];

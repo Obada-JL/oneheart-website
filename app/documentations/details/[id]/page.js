@@ -19,14 +19,14 @@ export default function DocDetails() {
       setIsLoading(true);
       try {
         // Fetch all photos 
-        const photosResponse = await fetch(`http://localhost:3500/api/photos`);
+        const photosResponse = await fetch(`https://oneheart.team/api/photos`);
         const allPhotosData = await photosResponse.json();
         // Filter photos by docId
         const filteredPhotos = allPhotosData.filter(photo => photo.docId === id);
         setPhotos(filteredPhotos);
 
         // Fetch videos directly from the docId endpoint
-        const videosResponse = await fetch(`http://localhost:3500/api/videos/${id}`);
+        const videosResponse = await fetch(`https://oneheart.team/api/videos/${id}`);
         const videosData = await videosResponse.json();
         setVideos(videosData);
       } catch (error) {

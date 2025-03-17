@@ -33,7 +33,7 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3500/api/messages", {
+      const response = await fetch("https://oneheart.team/api/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

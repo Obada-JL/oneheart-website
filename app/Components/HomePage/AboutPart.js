@@ -16,7 +16,7 @@ export default function AboutPart() {
     const fetchAboutUs = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3500/api/about-us"
+          "https://oneheart.team/api/about-us"
         );
         console.log("About us response:", response.data);
         setAboutDesc(response.data[0].aboutUs.description[language]);

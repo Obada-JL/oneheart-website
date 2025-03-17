@@ -64,7 +64,7 @@ export default function RecentCampagins() {
     const fetchCampaignVideos = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3500/api/campaign-videos"
+          "https://oneheart.team/api/campaign-videos"
         );
         setCampaignVideos(response.data);
         setLoading(false);

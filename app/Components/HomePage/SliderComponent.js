@@ -24,7 +24,7 @@ export default function SliderComponent() {
     const fetchSliders = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3500/api/image-slider"
+          "https://oneheart.team/api/image-slider"
         );
 
         const data = await response.json();

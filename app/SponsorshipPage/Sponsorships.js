@@ -19,7 +19,7 @@ export default function Sponsorships({ selectedCategory }) {
     const fetchSponsorships = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3500/api/sponsorships");
+        const response = await axios.get("https://oneheart.team/api/sponsorships");
         const data = response.data;
 
         // Filter sponsorships based on selected category

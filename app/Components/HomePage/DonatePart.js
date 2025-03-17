@@ -46,7 +46,7 @@ export default function DonatePart() {
       }
 
       const response = await fetch(
-        `http://localhost:3500/api/${endpoint}?limit=4`
+        `https://oneheart.team/api/${endpoint}?limit=4`
       );
       const data = await response.json();
       setItems(data);

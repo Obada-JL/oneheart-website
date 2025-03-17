@@ -14,7 +14,7 @@ export default function SponsorshipPage() {
   useEffect(() => {
     const fetchSponshorships = async () => {
       try {
-        const response = await axios.get("http://localhost:3500/api/sponsorships");
+        const response = await axios.get("https://oneheart.team/api/sponsorships");
         const sponsorships = response.data;
         const uniqueCategories = getUniqueCategories(sponsorships);
         setCategories(uniqueCategories);

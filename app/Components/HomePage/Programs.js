@@ -20,7 +20,7 @@ export default function Programs() {
     const fetchPrograms = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3500/api/programs"
+          "https://oneheart.team/api/programs"
         );
         setPrograms(response.data);
         setLoading(false);

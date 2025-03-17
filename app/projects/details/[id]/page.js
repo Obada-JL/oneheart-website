@@ -28,7 +28,7 @@ export default function ProjectDetails() {
         
         // Try support projects
         try {
-          const supportResponse = await fetch(`http://localhost:3500/api/support-projects/${id}`);
+          const supportResponse = await fetch(`https://oneheart.team/api/support-projects/${id}`);
           if (supportResponse.ok) {
             projectData = await supportResponse.json();
             type = 'support';
@@ -40,7 +40,7 @@ export default function ProjectDetails() {
         // Try current projects
         if (!projectData) {
           try {
-            const currentResponse = await fetch(`http://localhost:3500/api/current-projects/${id}`);
+            const currentResponse = await fetch(`https://oneheart.team/api/current-projects/${id}`);
             if (currentResponse.ok) {
               projectData = await currentResponse.json();
               type = 'current';
@@ -53,7 +53,7 @@ export default function ProjectDetails() {
         // Try completed projects
         if (!projectData) {
           try {
-            const completedResponse = await fetch(`http://localhost:3500/api/completed-projects/${id}`);
+            const completedResponse = await fetch(`https://oneheart.team/api/completed-projects/${id}`);
             if (completedResponse.ok) {
               projectData = await completedResponse.json();
               type = 'completed';
@@ -71,13 +71,13 @@ export default function ProjectDetails() {
         setProjectType(type);
         
         // Fetch project photos
-        const photosResponse = await fetch(`http://localhost:3500/api/photos`);
+        const photosResponse = await fetch(`https://oneheart.team/api/photos`);
         const allPhotosData = await photosResponse.json();
         const projectPhotos = allPhotosData.filter(photo => photo.projectId === id);
         setPhotos(projectPhotos);
         
         // Fetch project videos
-        const videosResponse = await fetch(`http://localhost:3500/api/videos/${id}`);
+        const videosResponse = await fetch(`https://oneheart.team/api/videos/${id}`);
         const videosData = await videosResponse.json();
         setVideos(videosData);
         

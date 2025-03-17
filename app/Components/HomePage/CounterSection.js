@@ -14,7 +14,7 @@ export default function CounterSection() {
     const fetchCounters = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3500/api/counter"
+          "https://oneheart.team/api/counter"
         );
         setCounters(response.data);
         setLoading(false);

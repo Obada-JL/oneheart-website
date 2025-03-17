@@ -109,7 +109,7 @@ export default function CurrentProjects({ selectedCategory }) {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3500/api/current-projects"
+          "https://oneheart.team/api/current-projects"
         );
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
