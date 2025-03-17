@@ -61,7 +61,7 @@ export default function Programs() {
               <div className="rounded-2xl shadow-md bg-white">
                 <div>
                   <img
-                    src={`http://localhost:3500/uploads/programs/${program.image}`}
+                    src={`https://oneheart.team/uploads/programs/${program.image}`}
                     alt={language === "ar" ? program.titleAr : program.title}
                     className="rounded-2xl programsImage"
                   />

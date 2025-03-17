@@ -91,8 +91,8 @@ export default function RecentCampagins() {
           {campaignVideos.map((video) => (
             <VideoThumbnail
               key={video._id}
-              thumbnail={`http://localhost:3500/uploads/campaign-thumbnails/${video.thumbnail}`}
-              videoSrc={`http://localhost:3500/uploads/campaign-videos/${video.video}`}
+              thumbnail={`https://oneheart.team/uploads/campaign-thumbnails/${video.thumbnail}`}
+              videoSrc={`https://oneheart.team/uploads/campaign-videos/${video.video}`}
               title={video.title}
               titleAr={video.titleAr}
               language={language}

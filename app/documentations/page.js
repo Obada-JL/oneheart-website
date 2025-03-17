@@ -111,14 +111,14 @@ export default function DocumentationsPage() {
                           </div>
                         </div>
                         <img
-                          src={`http://localhost:3500/uploads/documentations/${doc.images[0]}`}
+                          src={`https://oneheart.team/uploads/documentations/${doc.images[0]}`}
                           width={150}
                           height={100}
                           className="rounded-lg w-full"
                           alt={doc.title[language]}
                         />
                         <img
-                          src={`http://localhost:3500/uploads/documentations/${doc.images[1]}`}
+                          src={`https://oneheart.team/uploads/documentations/${doc.images[1]}`}
                           width={150}
                           height={100}
                           className="rounded-lg w-full"
@@ -127,7 +127,7 @@ export default function DocumentationsPage() {
                         />
                         <div className="col-span-2 relative h-[150px]">
                           <img
-                            src={`http://localhost:3500/uploads/documentations/${doc.images[2]}`}
+                            src={`https://oneheart.team/uploads/documentations/${doc.images[2]}`}
                             width={150}
                             height={100}
                             className="rounded-lg w-full h-full"

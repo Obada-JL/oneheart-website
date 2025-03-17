@@ -109,7 +109,7 @@ export default function CurrentCampagins({ selectedCategory }) {
           <div className="rounded-2xl shadow-md bg-white h-full"style={{boxShadow: "-5px 5px 10px 0px #47A8961F"}}>
             <div>
               <img
-                src={`http://localhost:3500/uploads/current-campaigns/${campaign.image}`}
+                src={`https://oneheart.team/uploads/current-campaigns/${campaign.image}`}
                 alt={getLocalizedContent(campaign.title, campaign.titleAr)}
                 className="w-full h-[200px] object-cover rounded-2xl"style={{boxShadow: "-5px 5px 10px 0px #0967391F"}}
               />

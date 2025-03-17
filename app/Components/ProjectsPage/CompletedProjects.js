@@ -24,7 +24,7 @@ const ProjectCard = ({ project }) => {
     <div className="rounded-2xl shadow-md bg-white w-full max-w-[350px] h-[420px] ">
       <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-2xl h-[250px]"style={{boxShadow: "-5px 5px 10px 0px #0967391F"}}>
         <img
-          src={`http://localhost:3500/uploads/completed-projects/${project.image}`}
+          src={`https://oneheart.team/uploads/completed-projects/${project.image}`}
           alt={getLocalizedContent(project.title, project.titleAr)}
           className="w-full h-full object-cover"
         />

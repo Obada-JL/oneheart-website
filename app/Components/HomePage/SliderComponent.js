@@ -75,7 +75,7 @@ export default function SliderComponent() {
             <div
               className="slide"
               style={{
-                backgroundImage: `url(http://localhost:3500/uploads/sliderImages/${slide.sliderImage})`,
+                backgroundImage: `url(https://oneheart.team/uploads/sliderImages/${slide.sliderImage})`,
               }}
             >
               <div className="overlayDiv" />

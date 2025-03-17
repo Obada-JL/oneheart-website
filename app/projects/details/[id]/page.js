@@ -145,7 +145,7 @@ export default function ProjectDetails() {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ 
-            backgroundImage: `url(${project.image ? `http://localhost:3500/uploads/${projectType}-projects/${project.details.image}` : '/default-project-bg.jpg'})`,
+            backgroundImage: `url(${project.image ? `https://oneheart.team/uploads/${projectType}-projects/${project.details.image}` : '/default-project-bg.jpg'})`,
             backgroundPosition: 'center',
           }}
         >
@@ -243,7 +243,7 @@ export default function ProjectDetails() {
                 photos.map((photo, index) => (
                   <div key={index} className="rounded-lg overflow-hidden shadow-md transform transition duration-300 hover:scale-105">
                     <img
-                      src={`http://localhost:3500/uploads/photos/${photo.image}`}
+                      src={`https://oneheart.team/uploads/photos/${photo.image}`}
                       alt={getLocalizedText(photo.title) || `Photo ${index + 1}`}
                       className="w-full h-64 object-cover"
                     />

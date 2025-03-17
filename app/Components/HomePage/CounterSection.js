@@ -45,7 +45,7 @@ export default function CounterSection() {
             <div key={counter._id} className="text-center p-4">
               <div className="counter-icon mb-4">
                 <img
-                  src={`http://localhost:3500/uploads/counterImages/${counter.counterImage}`}
+                  src={`https://oneheart.team/uploads/counterImages/${counter.counterImage}`}
                   alt={
                     language === "ar"
                       ? counter.counterTitleAr

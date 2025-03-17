@@ -75,7 +75,7 @@ export default function Sponsorships({ selectedCategory }) {
                   <div className="rounded-2xl shadow-md bg-white w-full h-full flex flex-col justify-around">
                     <div className="aspect-w-18 aspect-h-9">
                       <img
-                        src={`http://localhost:3500/uploads/sponsorships/${sponsorship.sponsorshipImage}`}
+                        src={`https://oneheart.team/uploads/sponsorships/${sponsorship.sponsorshipImage}`}
                         alt={sponsorship.title}
                         className="w-full h-[250px] object-cover rounded-2xl"style={{boxShadow: "-5px 5px 10px 0px #0967391F"}}
                       />
